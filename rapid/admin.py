@@ -161,7 +161,7 @@ class LayerInline(admin.TabularInline):
                 if self.owner.user:
                     # this is not a public map
                     queryset |= groups.filter(map__name=self.owner.name, map__user=self.owner.user)
-            kwargs['queryset'] = queryset.order_by('map__user', 'name')
+                kwargs['queryset'] = queryset.order_by('map__user', 'name')
         return admin.TabularInline.formfield_for_foreignkey(self, db_field, request, **kwargs)
 
 @register(Map)
