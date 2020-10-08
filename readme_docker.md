@@ -1,6 +1,6 @@
-GW4E for Docker
+Kenya RAPID for Docker
 ===============
-This Docker setup contains: GW4E code and postgresql
+This Docker setup contains: Kenya RAPID code and postgresql
 
 ###Create django.env
 
@@ -20,7 +20,7 @@ POSTGRES_USER=&lt;username&gt;
 POSTGRES_PASSWORD=&lt;password&gt;  
 
 ###Setup
-1. run git clone https://github.com/acaciawater/gw4e.git
+1. run git clone https://github.com/acaciawater/rapid.git
 2. dump existing database using pg_dump and put the sql file in the ./intdb.d directory (optional)
 3. add ./media folder with maps and documents (optional)
 4. run docker-compose up
