@@ -12,9 +12,9 @@ services:
       env_file: django.env
       volumes:
         - .:/code
-      command: python3 manage.py runserver 0.0.0.0:8000
+      command: python3 manage.py runserver 0.0.0.0:8888
       ports:
-        - "8000:8000"
+        - "8888:8888"
       depends_on:
         - db
 
