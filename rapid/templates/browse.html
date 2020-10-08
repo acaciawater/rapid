@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% block title %}Documents{% endblock %}
+{% block script %}
+{{ block.super }}
+<script src="/static/js/bstreeview.js"></script>
+{% endblock %}
+{% block style %}
+{{ block.super }}
+<link rel="stylesheet" href="/static/css/bstreeview.css"/>
+<style>
+
+.content {
+  background-color: white;
+  padding: 24px 2% 0 2%
+}
+
+h2,h3 {
+  padding-bottom: 0.5em;
+}
+
+#preview {
+  height: 638px;
+  background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+}
+
+.preview {
+  max-height: 638px;
+  max-width: 100%;
+  display: block;
+  margin: auto;
+}
+
+#tree1 {
+  height: 600px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+</style>
+{% endblock %}
+{% block content %}
+<div class="container">
+<div class="content">
+<h2 class="text-center">Kenya RAPID</h2>	
+<h3 class="text-center">Kenya Resilient Arid Lands Partnership for Integrated Development</h3>
+<h4 class="text-center">Reports and maps</h4>
+<hr/>
+<div class="row row-fluid">
+<div class="col col-4">
+  	<div id="tree1"></div>
+</div>
+<div class="col col-8">
+	<div id="preview" class="d-flex justify-content-center align-items-center h-100"><i class="text-muted">Select a document</i></div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+
+/**
+ * get data from backend and transform to structure for treeview
+ * @todo: let backend return data in format suitable for treeview
+ */
+function getTreeData(url) {
+	const getGroup = group => {
+		const getDocs = group => {
+			return group.documents.map(doc => {
+				return {
+					text: doc.name,
+					href: doc.url,
+					img: doc.img
+				}
+			})
+		} 
+		return group.folders.map(folder => {
+			return {
+				text: folder.name,
+				state: folder.state,
+				nodes: [...getDocs(folder), ...getGroup(folder)]
+			}
+		})
+	}
+
+	return $.getJSON(url).then(response => {
+		const tree = response.results.map(group => getGroup(group))
+		return tree[0]
+	})
+}
+
+var previewTimer = undefined
+
+function clearPreviewTimer() {
+	if (previewTimer) {
+		window.clearTimeout(previewTimer)
+		previewTimer = undefined
+	}	
+}
+
+function showContent(content) {
+	$("#preview").html("Loading...")
+	$("#preview").html(content)
+}
+
+function loadTree(cluster) {
+	let url = '/docs'
+	if (cluster) {
+		url += `?cluster=${cluster}`
+	}
+	getTreeData(url).then(tree => {
+		const thetree = $("#tree1").bstreeview({data: tree})
+		const view = thetree.bstreeview
+		console.debug(view.settings)
+		$("#tree1 .open").collapse('show').removeClass('open')
+		const items = $("#tree1 .list-group-item") 
+		items.on("mouseleave", function() {
+			clearPreviewTimer()
+		})
+		items.on("mouseenter", function() {
+			clearPreviewTimer()
+			const thumb = $(this).attr('thumb')
+			let content = ''
+			if (thumb) {
+				content = `<img class="preview" src="${thumb}">`
+				const link = $(this).find("a[href]").first()
+				if (link) {
+					const href = link.attr("href")
+					content = `<a href="${href}" title="Click to open">${content}</a>`
+				} 
+			}
+			else {
+				return; //content = '<i>(No preview available)</i>'
+			}
+			// show preview content when mouse is 800 msec on item 
+			previewTimer = window.setTimeout(content => showContent(content), 800, content)
+		})
+	})
+}
+
+function changeCluster() {
+	const urlParams = new URLSearchParams(window.location.search)
+	urlParams.set('cluster',$("#cluster").val())
+	window.location.search = urlParams
+}
+
+$(function() {
+	const urlParams = new URLSearchParams(window.location.search)
+	if (urlParams.has('cluster')) {
+		const cluster = urlParams.get('cluster')
+		$("#cluster").val(cluster)
+	}
+	loadTree($("#cluster").val())
+})
+
+</script>
+{% endblock content %}

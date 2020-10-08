@@ -1,0 +1,25 @@
+<?xml-stylesheet type="text/xsl" href="getfeatureinforesponse.xsl" ?>
+<GetFeatureInfoResponse>
+ <Layer name="bgt_waterdeel_b52dfe02_1b7b_4200_b75d_802109f1cff8">
+  <Feature id="408">
+   <Attribute value="735" name="fid"/>
+   <Attribute value="b411b4918-dce8-11e7-951f-610a7ca84980" name="gml_id"/>
+   <Attribute value="2014-06-18" name="creationDa"/>
+   <Attribute value="2016-10-31T08:29:35.000" name="LV-publica"/>
+   <Attribute value="0" name="relatieveH"/>
+   <Attribute value="false" name="inOnderzoe"/>
+   <Attribute value="2016-10-30T20:04:13.000" name="tijdstipRe"/>
+   <Attribute value="NL.IMGeo" name="namespace"/>
+   <Attribute value="W0616.dcf27758d3734b32888f682176825682" name="lokaalID"/>
+   <Attribute value="W0616" name="bronhouder"/>
+   <Attribute value="bestaand" name="bgt-status"/>
+   <Attribute value="geenWaarde" name="plus-statu"/>
+   <Attribute value="waterloop" name="class"/>
+   <Attribute value="sloot" name="plus-type"/>
+   <Attribute value="" name="terminatio"/>
+   <Attribute value="" name="eindRegist"/>
+   <Attribute value="1.000" name="verhard"/>
+  </Feature>
+ </Layer>
+</GetFeatureInfoResponse>
+

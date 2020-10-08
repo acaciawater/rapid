@@ -1,0 +1,20 @@
+version: '3'
+services:
+    db:
+      image: postgres
+      env_file: pg.env
+      volumes:
+        - ./pgdata:/var/lib/postgresql/data
+        - ./initdb.d:/docker-entrypoint-initdb.d
+
+    rapid:
+      build: .
+      env_file: django.env
+      volumes:
+        - .:/code
+      command: gunicorn -w 4 -t 300 -b 0.0.0.0:8000 --access-logformat '%({x-forwarded-for}i)s %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"' --access-logfile ./logs/access.log --error-logfile ./logs/error.log rapid.wsgi
+      ports:
+        - "8000:8000"
+      depends_on:
+        - db
+

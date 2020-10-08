@@ -1,0 +1,6 @@
+<?xml-stylesheet type="text/xsl" href="getfeatureinforesponse.xsl" ?>
+<GetFeatureInfoResponse>
+ <Layer name="WH2050_GHG_MAX_mv_676d771d_ac0b_4b3c_a5fb_d0f4f4e46f81">
+  <Attribute value="0.676729" name="Band 1"/>
+ </Layer>
+</GetFeatureInfoResponse>

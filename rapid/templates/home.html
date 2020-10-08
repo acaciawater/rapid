@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% include "google_analytics.html" %}
+<meta charset="UTF-8">
+<title>Proview</title>
+<script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>	
+<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
+<link rel="stylesheet" href="/static/css/proview.css"/>
+
+</head>
+<body>
+<div id="wrapper" class="container-fluid d-flex flex-column">
+<div id="header">
+<h1 class="text-center">Kenya RAPID</h1>	
+<h2 class="text-center">Kenya Resilient Arid Lands Partnership for Integrated Development</h2>
+</div>
+<div class="d-flex h-100">
+<div id="sidebar" class="d-flex flex-column">
+  <div class="list-group">
+	<button type="button" class="list-group-item btn btn-primary" data-toggle="modal" data-target="#projectModal" >Project</button>
+{% include "project-modal.html" %}
+	<button type="button" class="list-group-item btn btn-primary" data-toggle="modal" data-target="#partnersModal" >Partners</button>
+{% include "partners-modal.html" %}
+	<a href="/browse" class="list-group-item list-group-item-action">Reports and maps</a>
+	<a href="/map?cluster=1" class="list-group-item list-group-item-action">Map Viewer</a>
+	<button type="button" class="list-group-item btn btn-primary" data-toggle="modal" data-target="#disclaimerModal" >Disclaimer</button>
+{% include "disclaimer-modal.html" %}
+  </div>
+<!--   <div id="logos" class="mt-auto"> -->
+<!--     <img class="logo2" src="/static/logos/acacia.jpg"> -->
+<!--   </div> -->
+</div>
+<div id="content" class="d-flex flex-column">
+  <div><img src="/static/frontpage.png"></div>
+  <div class="mt-auto" id="footer">Acacia Water project viewer</div>
+</div>
+</div>
+</div>
+</body>
+</html>

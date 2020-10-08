@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load i18n admin_urls %}
+{% block title %}{{map.name}} {% endblock %}
+{% block style %}
+{{ block.super }}
+<link rel="stylesheet" href="//unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
+<link rel="stylesheet" href="//unpkg.com/leaflet.markercluster@1.0.5/dist/MarkerCluster.css"/>
+<link rel="stylesheet" href="//unpkg.com/leaflet.markercluster@1.0.5/dist/MarkerCluster.Default.css"/>
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="/static/css/leaflet.wmslegend.css"/>
+<link rel="stylesheet" href="/static/css/maps.css"/>
+<link rel="stylesheet" href="/static/css/slider.css"/>
+{% endblock %}
+{% block script %}
+{{ block.super }}
+<script src="//maps.googleapis.com/maps/api/js?key={{api_key}}" async defer></script>
+<script src="//unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<script src="//unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js"></script>
+<script src="//unpkg.com/leaflet.nontiledlayer@1.0.8/dist/NonTiledLayer.js"></script>
+<script src="//unpkg.com/esri-leaflet@2.1.1/dist/esri-leaflet.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="/static/js/xml2json.js"></script>
+<script src="/static/js/maps.js"></script>
+<script src="/static/js/wfslayer.js"></script>
+<script src="/static/js/featureinfo.js"></script>
+ 
+<script>
+
+async function addAllOverlays(groups, map, list) {
+	let id = 0;
+	return groups.forEach(group => {
+		const groupId = `group${id++}`;
+		let item = `<a class="list-group-item list-group-item-secondary py-1" data-toggle="collapse" href="#${groupId}" aria-expanded="true" aria-controls="${groupId}">
+		<i class="fas pr-3 fa-layer-group"></i><strong>${group.name}</strong></a>
+		<div class="collapse ${group.state}" id="${groupId}"></div>`;
+		list.append(item);
+
+		// Allow user to sort layers in group list
+		$(`#${groupId}`).sortable({
+			update: function(event,ui) {
+				// get (integer) indices of overlays
+				const ids = $(list).find('li[id^="layer_"]').toArray().map(e => parseInt(e.id.split('_')[1]))
+				sortOverlays(overlayLayers, ids)
+				$.post('reorder/',JSON.stringify(ids))
+			}
+		});
+		return addOverlays(map, $(`#${groupId}`), group.layers)
+	});
+}
+
+/***
+ * call getFeatureInfo on all visible WMS layers on the map and return contents of html table for popup
+ */
+async function getFeatureInfo(evt) {
+	const layers = overlayLayers.filter(layer => layer.wmsParams && layer.layerDefn.visible && layer.layerDefn.clickable)
+	const promises = layers.map(layer => {
+		const fi = new FeatureInfo(layer)
+		return fi.getFeatureInfo(evt)
+	})
+	const featureInfo = await Promise.all(promises)
+	return featureInfo.filter(a => a.length > 0)
+}
+
+$(function() {
+
+	// initialize the map
+	const options = {{options|safe}};
+	const map = initMap('map',options,{{map.id}});
+	
+	// set the extent of the map
+	const extent = {{extent}};
+	if (extent.length === 4) {
+		const bounds = L.latLngBounds([extent[1],extent[0]],[extent[3],extent[2]]);
+		map.fitBounds(bounds);
+	}
+
+	// load overlays
+	const list = $("#list");
+	overlayLayers = [];
+	$.getJSON('/map/{{map.pk}}/config/').then(response => {
+		addAllOverlays(response.groups, map, list).then(() => {
+			map.on('click', evt => {
+				// query all visible wms layers
+				getFeatureInfo(evt).then(info => {
+					if (info.length > 0) {
+				    	L.popup({minWidth: 400, maxWidth: 800, maxHeight:600})
+					    .setLatLng(evt.latlng)
+					    .setContent('<h5 class="text-center unibar">Information</h5>\
+					    		<table class="table table-hover table-sm">\
+					    		<thead><tr><th>Layer</th><th>Attribute</th><th>Value</th></tr></thead><tbody>' + 
+					    		info.join('\n') + '</tbody></table>')
+					    .openOn(map)  	
+					}
+				})
+			})
+		})
+	})
+});
+
+</script>
+<style>
+
+body {
+  max-height: 100vh;
+  height: 100%;
+}
+
+#listwrapper {
+  overflow-y: scroll
+}
+
+.list-group-item {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+
+</style>
+{% endblock %}
+{% block header %}
+<nav class="navbar navbar-dark unibar">
+	<li class="nav nav-brand nav-item dropdown">
+	    <a href="{% url 'home' %}"><img class="logosmall mt-2" src="/static/home-white.png"></a>
+        <a class="nav-link dropdown-toggle unibar" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{object.name}}
+        </a>
+        <div class="dropdown-menu unibar" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item unibar" href="/map?cluster=1">Cluster 1 - Wag Himra</a>
+          <a class="dropdown-item unibar" href="/map?cluster=2">Cluster 2 - Afar</a>
+          <a class="dropdown-item unibar" href="/map?cluster=3">Cluster 3 - Siti</a>
+          <a class="dropdown-item unibar" href="/map?cluster=4">Cluster 4 - Liben</a>
+          <a class="dropdown-item unibar" href="/map?cluster=5">Cluster 5 - Bale</a>
+          <a class="dropdown-item unibar" href="/map?cluster=6">Cluster 6 - Borena</a>
+          <a class="dropdown-item unibar" href="/map?cluster=7">Cluster 7 - Wolayta</a>
+          <a class="dropdown-item unibar" href="/map?cluster=8">Cluster 8 - South Omo</a>
+        </div>
+      </li>
+   <li class="nav justify-content-end">
+    	<a href="//www.unicef.org/ethiopia"><img class="logo" src="/static/unicef.png"></img></a>
+    	<a href="//eeas.europa.eu/delegations/ethiopia_en"><img class="logo" src="/static/eulogo.jpg"></img></a>
+    	<a href="//en.acaciawater.com"><img class="logo ml-3" src="/static/default-logo.png"></img></a>
+   </li>
+</nav>
+{% endblock %}
+{% block content %}
+<div class="row h-100 mx-0 px-0">
+	<div id="map" class="col-sm-10 h-100"></div>
+	{% block list %}
+	<div id="listwrapper" class="col-sm-2 mh-100">
+		<div id="list" class="list-group"></div>
+	</div>
+	{% endblock list %}
+</div>
+{% endblock %}

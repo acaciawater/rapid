@@ -1,0 +1,84 @@
+@CHARSET "UTF-8";
+
+html, body {
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+html, body {
+	background-color: #f5f9fa;
+}
+
+#list {
+	overflow-y: auto;
+}
+
+.legend {
+  padding: 6px 8px;
+  font: 14px Arial, Helvetica, sans-serif;
+/*   background: white; */
+/*   background: rgba(255, 255, 255, 0.8); */
+/*   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); */
+/*   border-radius: 5px; */
+  line-height: 24px;
+  color: #555;
+}
+
+/* extra small font size for legends */
+.fa-xxs {
+	font-size: 0.5rem;
+}
+
+.leaflet-popup-content-wrapper {
+  background: rgba(240, 250, 255, 0.9);
+}
+.legend div {
+	font-size: 10pt;
+}
+
+.laatste {
+	float:right;
+}
+
+.bullet {
+ 	width: 16px;
+ 	height: 16px;
+ 	margin-left: -12px;
+ 	margin-right: 4px;
+}
+.label {
+	position: absolute;
+	padding: 2px;
+	background: #ffff99;
+}
+
+.unibar {
+	background-color: #1CABE3;
+    border-color: #E7E7E7;
+    color: white;
+    font-size: large;
+    /*font-weight: bold;*/
+}
+
+.logo {
+  height: 48px;
+}
+
+.logosmall {
+  height: 24px;
+}
+
+.download-link {
+	display: none;
+	color: black;
+}
+
+.layer:hover .download-link {
+	display: inline;
+}
+
+a.cog {
+  color: white;
+  text-decoration: none;
+}

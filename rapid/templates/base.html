@@ -1,0 +1,47 @@
+{% load staticfiles %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+{% include "google_analytics.html" %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+ 	<link href="{% static "img/favicon.ico" %}" rel="icon" type="image/x-ico" />
+	<title>{% block title %}{{object.name}}{% endblock %}</title>
+	{% block script %}
+	<script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script
+			  src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+			  integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+			  crossorigin="anonymous"></script>	
+	<script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+	{% endblock %}
+	{% block style %}
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
+	<link rel="stylesheet" href="/static/css/maps.css"/>
+	{% endblock %}
+  </head>
+{% csrf_token %}
+<body>
+	<div class="outer container-fluid d-flex flex-column h-100 mx-0 px-0">
+    {% block header %}
+    <nav class="navbar navbar-dark unibar">
+	    <a href="{% url 'home' %}"><img class="logosmall" src="/static/home-white.png"></a>
+	    <li class="nav justify-content-end">
+<!-- 			<a href="//eeas.europa.eu/delegations/ethiopia_en"><img class="logo" src="/static/eulogo.jpg"></img></a> -->
+<!-- 	    	<a href="//www.unicef.org/ethiopia"><img class="logo" src="/static/unicef.png"></img></a> -->
+	    	<a href="//en.acaciawater.com"><img class="logo" src="/static/logos/navbarlogo.png"></img></a>
+	    </li>
+    </nav>
+    {% endblock header %}
+    {% block content %}
+    {% endblock content %}
+    {% block footer %}
+    {% endblock footer %}
+    </div>
+</body>
+</html>
