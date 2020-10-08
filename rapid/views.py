@@ -86,25 +86,21 @@ class OverlayView(TemplateView):
     template_name = 'overlay.html'
 
 
-CLUSTERS = {
-    '0': 'Ethiopia', # only for admins?
-    '1': 'Wag Himra',
-    '2': 'Afar',
-    '3': 'Siti',
-    '4': 'Liben',
-    '5': 'Bale',
-    '6': 'Borena',
-    '7': 'Wolayta',
-    '8': 'South Omo'
+COUNTIES = {
+    '0': 'All counties', # only for admins?
+    '1': 'Garissa',
+    '2': 'Isiolo',
+    '3': 'Marsabit',
+    '4': 'Turkana',
+    '5': 'Wajir',
 }
 
-
 def map_proxy(request):
-    ''' resolve map id from cluster name or number '''
-    cluster = request.GET.get('cluster')
-    if not cluster:
-        return HttpResponseNotFound('Cluster name or number is missing.')
-    clustername = CLUSTERS[cluster] if cluster in '012345678' else cluster
+    ''' resolve map id from county name or number '''
+    county = request.GET.get('county')
+    if not county:
+        return HttpResponseNotFound('County name or number is missing.')
+    clustername = COUNTIES.get(county, county)
     
     map_query = Map.objects.filter(name__icontains=clustername)
     if request.user is None or request.user.is_anonymous:
@@ -126,38 +122,35 @@ def get_map(request, pk):
     map_obj = get_object_or_404(Map, pk=pk)
     return HttpResponse(map_obj.to_json(), content_type='application/json')
 
-# @login_required
-def docs2json(request):
-    ''' return json response with all documents grouped by theme '''
+
+def docs2tree(request):
+    ''' return json response with all documents grouped by theme suitable for bstreeview '''
     
-    from maps.engine import engine
+    from .engine import engine
     
-    def process_group(cluster, group, result):
+    def process_group(county, group, result):
         data = {
             'id': group.id,
-            'name': group.name,
+            'text': group.name,
             'state': 'open' if group.open else 'closed',
-            'documents': process_docs(cluster, group),
-            'folders': []
+            'nodes': process_docs(county, group),
         }
         result.append(data)
         for child in group.children.order_by('order'):
-            if not child.empty(cluster):
-                process_group(cluster, child, data['folders'])
+            process_group(county, child, data['nodes'])
 
-    def process_docs(cluster, group):
+    def process_docs(county, group):
         result = []
         queryset = group.document_set.order_by('cluster','order','name')
-        if cluster:
-            queryset = queryset.filter(Q(cluster=cluster)|Q(cluster=0))
+        if county:
+            queryset = queryset.filter(Q(cluster=county)|Q(cluster=0))
         for doc in queryset:
             item = {
                 'id': doc.id,
-                'name': doc.name,
-                'description': doc.description,
+                'text': doc.name
                 }
             if doc.doc:
-                item['url'] = doc.url or doc.doc.url
+                item['href'] = doc.url or doc.doc.url
                 try:
                     with engine(doc.doc.name):
                         img = get_thumbnail(doc.doc, 'x600')
@@ -168,13 +161,13 @@ def docs2json(request):
             result.append(item)
         return result
     
-    root = DocumentGroup.objects.get(parent__isnull=True)
-    cluster = request.GET.get('cluster',0)
+    county = request.GET.get('county',0)
     try:
-        cluster = int(cluster)
+        county = int(county)
     except ValueError:
-        cluster = 0
+        county = 0
     result = []
-    process_group(cluster, root, result)
+    for group in DocumentGroup.objects.filter(parent__isnull=True).order_by('order'):
+        process_group(county, group, result)
     return JsonResponse({'results': result})
-
+    

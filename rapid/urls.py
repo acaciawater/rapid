@@ -15,12 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import MapDetailView, HomeView
 from django.urls.conf import include
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import map_proxy, toggle, reorder, docs2json, BrowseView, OverlayView,\
-    get_map
+from .views import MapDetailView, HomeView, BrowseView, OverlayView,\
+    map_proxy, toggle, reorder, get_map, docs2tree
 
 urlpatterns = [
     path('', HomeView.as_view()),
@@ -34,7 +33,7 @@ urlpatterns = [
     path('map/<int:pk>/config/', get_map, name='map-config'),
     path('map/<int:pk>/', MapDetailView.as_view(),name='map-detail'),
     path('map', map_proxy, name='cluster-view'),
-    path('docs', docs2json),
+    path('tree', docs2tree),
     
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 

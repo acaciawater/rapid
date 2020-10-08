@@ -50,6 +50,14 @@ h2,h3 {
 <hr/>
 <div class="row row-fluid">
 <div class="col col-4">
+    <select id="county" class="custom-select" onchange="changeCounty()">
+	    <option value="0" selected>All counties</option>
+	    <option value="1">Garissa</option>
+	    <option value="2">Isiolo</option>
+	    <option value="3">Marsabit</option>
+	    <option value="4">Turkana</option>
+	    <option value="5">Wajir</option>
+    </select>
   	<div id="tree1"></div>
 </div>
 <div class="col col-8">
@@ -61,33 +69,9 @@ h2,h3 {
 
 <script>
 
-/**
- * get data from backend and transform to structure for treeview
- * @todo: let backend return data in format suitable for treeview
- */
 function getTreeData(url) {
-	const getGroup = group => {
-		const getDocs = group => {
-			return group.documents.map(doc => {
-				return {
-					text: doc.name,
-					href: doc.url,
-					img: doc.img
-				}
-			})
-		} 
-		return group.folders.map(folder => {
-			return {
-				text: folder.name,
-				state: folder.state,
-				nodes: [...getDocs(folder), ...getGroup(folder)]
-			}
-		})
-	}
-
 	return $.getJSON(url).then(response => {
-		const tree = response.results.map(group => getGroup(group))
-		return tree[0]
+		return response.results
 	})
 }
 
@@ -105,14 +89,14 @@ function showContent(content) {
 	$("#preview").html(content)
 }
 
-function loadTree(cluster) {
-	let url = '/docs'
-	if (cluster) {
-		url += `?cluster=${cluster}`
+function loadTree(county) {
+	let url = '/tree'
+	if (county) {
+		url += `?county=${county}`
 	}
-	getTreeData(url).then(tree => {
-		const thetree = $("#tree1").bstreeview({data: tree})
-		const view = thetree.bstreeview
+	$.getJSON(url).then(response => {
+		const tree = $("#tree1").bstreeview({data: response.results})
+		const view = tree.bstreeview
 		console.debug(view.settings)
 		$("#tree1 .open").collapse('show').removeClass('open')
 		const items = $("#tree1 .list-group-item") 
@@ -140,19 +124,19 @@ function loadTree(cluster) {
 	})
 }
 
-function changeCluster() {
+function changeCounty() {
 	const urlParams = new URLSearchParams(window.location.search)
-	urlParams.set('cluster',$("#cluster").val())
+	urlParams.set('county',$("#county").val())
 	window.location.search = urlParams
 }
 
 $(function() {
 	const urlParams = new URLSearchParams(window.location.search)
-	if (urlParams.has('cluster')) {
-		const cluster = urlParams.get('cluster')
-		$("#cluster").val(cluster)
+	if (urlParams.has('county')) {
+		const county = urlParams.get('county')
+		$("#county").val(county)
 	}
-	loadTree($("#cluster").val())
+	loadTree($("#county").val())
 })
 
 </script>
