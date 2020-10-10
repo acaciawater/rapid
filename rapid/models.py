@@ -229,8 +229,8 @@ class DocumentGroup(models.Model):
             return True
     
     def __str__(self):
-        if self.parent and self.parent.parent is not None:
-            # insert parent name, except when parent is root
+        if self.parent is not None:
+            # insert parent name
             return f'{self.parent}-{self.name}'
         else:
             return self.name
