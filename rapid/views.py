@@ -124,7 +124,7 @@ def get_map(request, pk):
 
 
 def docs2tree(request):
-    ''' return json response with all documents grouped by theme suitable for bstreeview '''
+    ''' return json response with all documents in a format suitable for bstreeview '''
     
     from .engine import engine
     
@@ -156,7 +156,7 @@ def docs2tree(request):
                         img = get_thumbnail(doc.doc, 'x600')
                         if img:
                             item['img'] = img.url
-                except ValueError:
+                except:
                     pass
             result.append(item)
         return result
