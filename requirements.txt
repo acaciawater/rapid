@@ -8,3 +8,4 @@ redis~=3.4.1
 geopandas~=0.7.0
 gunicorn~=20.0
 rasterio~=1.1.5
+preview-generator=0.15.4
