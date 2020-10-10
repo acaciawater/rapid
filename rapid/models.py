@@ -3,6 +3,7 @@ Created on May 20, 2019
 
 @author: theo
 '''
+import os
 import json
 
 from django.contrib.auth.models import User
@@ -10,11 +11,11 @@ from django.db import models
 from django.urls.base import reverse
 from django.utils.translation import gettext_lazy as _
 
-from sorl.thumbnail import ImageField
 from ogc.models import Layer as OCGLayer
 
 import logging
 from django.db.utils import IntegrityError
+from django.conf import settings
 logger = logging.getLogger(__name__)
 
 
@@ -241,16 +242,37 @@ def upload_to_cluster(instance, filename):
     
 class Document(models.Model):
     ''' Downloadable document '''
+
+    from preview_generator.manager import PreviewManager
+    preview_manager = PreviewManager(os.path.join(settings.MEDIA_ROOT,'preview'), create_folder=True)
+
     group = models.ForeignKey(DocumentGroup,on_delete=models.CASCADE)
     cluster = models.CharField(max_length=30,blank=True,null=True)
     name = models.CharField(max_length=100)    
     description = models.TextField(blank=True, null=True)
     url = models.URLField(blank=True,null=True)
-    doc = ImageField(upload_to=upload_to_cluster, blank=True, null=True)
+    doc = models.FileField(upload_to=upload_to_cluster, blank=True, null=True)
+    preview = models.ImageField(upload_to='preview', blank=True, null=True)
     order = models.PositiveSmallIntegerField(default=1)
     
     def __str__(self):
         return self.name
+
+    def create_preview(self):
+        try:
+            path = self.preview_manager.get_jpeg_preview(self.doc.path, height=600)
+            index = path.find('preview')
+            name = path[index:]
+        except:
+            name = 'preview/na.png'
+        self.preview.name = name
+        self.save()
+            
+    @property
+    def preview_url(self):
+        if not (self.preview and os.path.exists(self.preview.path)):
+            self.create_preview()
+        return self.preview.url if self.preview else None
     
     class Meta:
         ordering = ('name',)

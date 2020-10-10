@@ -15,7 +15,6 @@ from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
 
 from .models import Map, DocumentGroup, Layer
-from sorl.thumbnail.shortcuts import get_thumbnail
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -126,8 +125,6 @@ def get_map(request, pk):
 def docs2tree(request):
     ''' return json response with all documents in a format suitable for bstreeview '''
     
-    from .engine import engine
-    
     def process_group(county, group, result):
         data = {
             'id': group.id,
@@ -151,13 +148,7 @@ def docs2tree(request):
                 }
             if doc.doc:
                 item['href'] = doc.url or doc.doc.url
-                try:
-                    with engine(doc.doc.name):
-                        img = get_thumbnail(doc.doc, 'x600')
-                        if img:
-                            item['img'] = img.url
-                except:
-                    pass
+                item['img'] = doc.preview_url
             result.append(item)
         return result
     

@@ -2,7 +2,6 @@ Django<3.0
 OWSLib~=0.19
 Pillow~=7.1
 django-cors-headers~=3.0
-sorl-thumbnail~=12.6.3
 psycopg2~=2.8.3
 redis~=3.4.1
 geopandas~=0.7.0
