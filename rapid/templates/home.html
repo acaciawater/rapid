@@ -11,34 +11,33 @@
 <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
-<link rel="stylesheet" href="/static/css/proview.css"/>
-
+<style>
+#content img, div img {
+  width: 100%;
+}
+</style>
 </head>
 <body>
-<div id="wrapper" class="container-fluid d-flex flex-column">
-<div id="header">
-<h1 class="text-center">Kenya RAPID</h1>	
-<h2 class="text-center">Kenya Resilient Arid Lands Partnership for Integrated Development</h2>
-</div>
-<div class="d-flex h-100">
-<div id="sidebar" class="d-flex flex-column">
+<nav class="navbar navbar-light bg-light">
+  <span class="navbar-brand mb-0 h1">Kenya RAPID</span>
+</nav>
+<div id="wrapper" class="container-fluid">
+<div class="row">
+<div id="sidebar" class="col-md-4">
   <div class="list-group">
-	<button type="button" class="list-group-item btn btn-primary" data-toggle="modal" data-target="#projectModal" >Project</button>
+	<a href="" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#projectModal" >Project</a>
 {% include "project-modal.html" %}
-	<button type="button" class="list-group-item btn btn-primary" data-toggle="modal" data-target="#partnersModal" >Partners</button>
+	<a href="" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#partnersModal" >Partners</a>
 {% include "partners-modal.html" %}
 	<a href="/browse" class="list-group-item list-group-item-action">Reports and maps</a>
 	<a href="/map?county=1" class="list-group-item list-group-item-action">Map Viewer</a>
-	<button type="button" class="list-group-item btn btn-primary" data-toggle="modal" data-target="#disclaimerModal" >Disclaimer</button>
+	<a hfref="" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#disclaimerModal" >Disclaimer</a>
 {% include "disclaimer-modal.html" %}
   </div>
-<!--   <div id="logos" class="mt-auto"> -->
-<!--     <img class="logo2" src="/static/logos/acacia.jpg"> -->
-<!--   </div> -->
+  </br>
 </div>
-<div id="content" class="d-flex flex-column">
+<div id="content" class="col-md-8">
   <div><img src="/static/frontpage.png"></div>
-  <div class="mt-auto" id="footer">Acacia Water project viewer</div>
 </div>
 </div>
 </div>
