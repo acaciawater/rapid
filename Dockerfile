@@ -3,7 +3,6 @@ RUN export DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
 	gdal-bin \
 	libgdal-dev \
-	libreoffice \
 	zlib1g-dev \
 	libjpeg-dev \
 	python3-pythonmagick \
@@ -15,6 +14,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 	libimage-exiftool-perl \
 	ufraw-batch \
 	ffmpeg
+
+RUN apt-get install -y --no-install-recommends libreoffice
 
 WORKDIR /code
 COPY requirements.txt .
