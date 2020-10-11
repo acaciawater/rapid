@@ -33,7 +33,6 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'rapid',
     'ogc',
-    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
