@@ -19,36 +19,51 @@ h2,h3 {
 }
 
 #preview {
-  height: 638px;
   background-color: white;
   border: 1px solid lightgray;
   border-radius: 4px;
 }
 
-.preview {
-  max-height: 638px;
+@media only screen and (max-width: 600px) {
+#tree1 {
+  max-height: 300px;
+  min-height: 300px;
+  overflow: scroll;
+}
+}
+
+@media only screen and min-width: 600px) {
+#tree1 {
+  min-height: 600px;
+  max-height: 600px;
+  overflow: scroll;
+}
+}
+
+#preview img {
   max-width: 100%;
   display: block;
   margin: auto;
 }
 
-#tree1 {
-  height: 600px;
-  max-height: 600px;
-  overflow-y: auto;
-}
-
 </style>
 {% endblock %}
+{% block header %}
+<nav class="navbar navbar-dark unibar">
+	<li class="nav nav-brand">
+	    <a href="{% url 'home' %}"><img class="logosmall mt-2" src="/static/home-white.png"></a>
+          <span class="mt-2 ml-2">Documents and Maps</span>
+    </li>
+   <li class="nav justify-content-end">
+    	<a href="//en.acaciawater.com"><img class="logo ml-3" src="/static/logos/navbarlogo.png"></img></a>
+   </li>
+</nav>
+{% endblock %}
 {% block content %}
-<div class="container">
-<div class="content">
-<h2 class="text-center">Kenya RAPID</h2>	
-<h3 class="text-center">Kenya Resilient Arid Lands Partnership for Integrated Development</h3>
-<h4 class="text-center">Reports and maps</h4>
-<hr/>
-<div class="row row-fluid">
-<div class="col col-4">
+<div class="container-fluid h-100">
+<div class="content h-100">
+<div class="row row-fluid h-100">
+<div class="col-md-4 col-sm-12">
     <select id="county" class="custom-select" onchange="changeCounty()">
 	    <option value="0" selected>All counties</option>
 	    <option value="1">Garissa</option>
@@ -59,8 +74,8 @@ h2,h3 {
     </select>
   	<div id="tree1"></div>
 </div>
-<div class="col col-8">
-	<div id="preview" class="d-flex justify-content-center align-items-center h-100"><i class="text-muted">Select a document</i></div>
+<div class="col-md-8 col-sm-12">
+	<div id="preview"><i class="text-muted">Select a document</i></div>
 </div>
 </div>
 </div>
@@ -107,7 +122,7 @@ function loadTree(county) {
 			const thumb = $(this).attr('thumb')
 			let content = ''
 			if (thumb) {
-				content = `<img class="preview" src="${thumb}">`
+				content = `<img src="${thumb}">`
 				const link = $(this).find("a[href]").first()
 				if (link) {
 					const href = link.attr("href")
