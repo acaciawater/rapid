@@ -24,10 +24,7 @@ h2,h3 {
   overflow: scroll;
 }
 #preview {
-  height: 50%;
   width: 100%;
-  position: relative;
-  top: 0;
   background-color: white;
   border: 1px solid lightgray;
   border-radius: 4px;
@@ -61,7 +58,7 @@ h2,h3 {
 </style>
 {% endblock %}
 {% block header %}
-<nav class="navbar sticky-top navbar-dark unibar">
+<nav class="navbar navbar-dark unibar">
 	<li class="nav nav-brand">
 	    <a href="{% url 'home' %}"><img class="logosmall mt-2" src="/static/home-white.png"></a>
           <span class="mt-2 ml-2">Documents and Maps</span>
