@@ -126,16 +126,16 @@ def docs2tree(request):
     ''' return json response with all documents in a format suitable for bstreeview '''
     
     def process_group(county, group, result):
-        data = {
+        children = []
+        for child in group.children.order_by('order'):
+            if not child.empty(county):
+                process_group(county, child, children)
+        result.append({
             'id': group.id,
             'text': group.name,
             'state': 'open' if group.open else 'closed',
-            'nodes': process_docs(county, group),
-        }
-        result.append(data)
-        for child in group.children.order_by('order'):
-            if not child.empty(county):
-                process_group(county, child, data['nodes'])
+            'nodes': children + process_docs(county, group),
+        })
 
     def process_docs(county, group):
         result = []
