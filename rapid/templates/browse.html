@@ -17,6 +17,30 @@ h2,h3 {
   padding-bottom: 0.5em;
 }
 
+@media only screen and (max-width: 600px) {
+#tree1 {
+  max-height: 300px;
+  min-height: 300px;
+  overflow: scroll;
+}
+#preview {
+  height: 50%;
+  width: 100%;
+  position: relative;
+  top: 0;
+  background-color: white;
+  border: 1px solid lightgray;
+  border-radius: 4px;
+}
+
+}
+
+@media only screen and min-width: 600px) {
+#tree1 {
+  min-height: 600px;
+  max-height: 600px;
+  overflow: scroll;
+}
 #preview {
   height: 100%;
   width: 100%;
@@ -26,20 +50,6 @@ h2,h3 {
   border-radius: 4px;
 }
 
-@media only screen and (max-width: 600px) {
-#tree1 {
-  max-height: 300px;
-  min-height: 300px;
-  overflow: scroll;
-}
-}
-
-@media only screen and min-width: 600px) {
-#tree1 {
-  min-height: 600px;
-  max-height: 600px;
-  overflow: scroll;
-}
 }
 
 #preview img {
@@ -64,7 +74,7 @@ h2,h3 {
 {% block content %}
 <div class="container-fluid h-100">
 <div class="row row-fluid h-100">
-<div class="col-md-4 col-sm-12 h-100">
+<div class="col-md-4 col-sm-12">
     <select id="county" class="custom-select" onchange="changeCounty()">
 	    <option value="0" selected>All counties</option>
 	    <option value="1">Garissa</option>
