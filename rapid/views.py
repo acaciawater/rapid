@@ -134,7 +134,8 @@ def docs2tree(request):
         }
         result.append(data)
         for child in group.children.order_by('order'):
-            process_group(county, child, data['nodes'])
+            if not child.empty(county):
+                process_group(county, child, data['nodes'])
 
     def process_docs(county, group):
         result = []
