@@ -9,9 +9,8 @@
 <link rel="stylesheet" href="/static/css/bstreeview.css"/>
 <style>
 
-.content {
-  background-color: white;
-  padding: 24px 2% 0 2%
+body, html {
+	height: 100%;
 }
 
 h2,h3 {
@@ -19,6 +18,9 @@ h2,h3 {
 }
 
 #preview {
+  height: 100%;
+  width: 100%;
+  position: fixed;
   background-color: white;
   border: 1px solid lightgray;
   border-radius: 4px;
@@ -42,14 +44,14 @@ h2,h3 {
 
 #preview img {
   max-width: 100%;
+  position: relative;
   display: block;
-  margin: auto;
 }
 
 </style>
 {% endblock %}
 {% block header %}
-<nav class="navbar navbar-dark unibar">
+<nav class="navbar sticky-top navbar-dark unibar">
 	<li class="nav nav-brand">
 	    <a href="{% url 'home' %}"><img class="logosmall mt-2" src="/static/home-white.png"></a>
           <span class="mt-2 ml-2">Documents and Maps</span>
@@ -61,9 +63,8 @@ h2,h3 {
 {% endblock %}
 {% block content %}
 <div class="container-fluid h-100">
-<div class="content h-100">
 <div class="row row-fluid h-100">
-<div class="col-md-4 col-sm-12">
+<div class="col-md-4 col-sm-12 h-100">
     <select id="county" class="custom-select" onchange="changeCounty()">
 	    <option value="0" selected>All counties</option>
 	    <option value="1">Garissa</option>
@@ -76,7 +77,6 @@ h2,h3 {
 </div>
 <div class="col-md-8 col-sm-12">
 	<div id="preview"><i class="text-muted">Select a document</i></div>
-</div>
 </div>
 </div>
 </div>
