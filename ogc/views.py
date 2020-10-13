@@ -108,8 +108,8 @@ def download(request, pk):
     options = request.GET.dict()
     if not 'dpi' in options:
         options.update(dpi=96)
-    if not 'srs' in options:
-        options.update(srs='EPSG:32637')
+#     if not 'srs' in options:
+#         options.update(srs='EPSG:32637')
 #     if not 'scale' in options:
 #         options.update(scale=250000)
     filename, content, content_type = layer.download(**options)
