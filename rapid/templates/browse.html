@@ -121,6 +121,7 @@ async function showPreview(node) {
 			$("#preview").html("Loading preview...")
 			const result = await $.getJSON(`/preview/${pk}`)
 			thumb = result.url
+			$(node).attr('thumb', thumb)
 		}
 	}
 	if (thumb) {
