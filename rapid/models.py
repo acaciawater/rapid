@@ -269,7 +269,7 @@ class Document(models.Model):
         self.save()
 
     def has_preview(self):
-        return self.preview is not None and os.path.exists(self.preview.path)
+        return self.preview and os.path.exists(self.preview.path)
             
     @property
     def preview_url(self):
