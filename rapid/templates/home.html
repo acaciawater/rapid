@@ -13,9 +13,19 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
 <style>
-#content img, div img {
-  width: 100%;
+
+#fp {
+  height: 600px;
 }
+
+@media only screen and (max-width: 600px) {
+#fp {
+  width: 100%;
+  height: auto;'
+}
+}
+
+
 </style>
 </head>
 <body>
@@ -38,7 +48,7 @@
   </br>
 </div>
 <div id="content" class="col-md-8 col-sm-12">
-  <div><img src="/static/frontpagelogos.png"></div>
+  <div><img id="fp" src="/static/frontpagelogos.png"></div>
 </div>
 </div>
 </div>
