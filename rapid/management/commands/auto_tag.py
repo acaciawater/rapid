@@ -14,7 +14,7 @@ def tag(groups, cluster, force=False, recurse=True):
         if not force:
             # take only docs without cluster
             query = query.filter(cluster=0)
-#         query.update(cluster=cluster)
+        query.update(cluster=cluster)
         if recurse:
             tag(group.children.all(), cluster, force, recurse)
 
@@ -37,7 +37,7 @@ def process_docs(names, force, recurse):
         if len(tags) == 1:
             logger.debug(f'Tagging document {doc.name}')
             doc.cluster = tags[0]
-#                 doc.save()
+            doc.save(update_fields=('cluster',))
     
 class Command(BaseCommand):
 
