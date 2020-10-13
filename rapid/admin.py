@@ -205,12 +205,25 @@ class DocumentInline(admin.TabularInline):
 class DocumentAdmin(admin.ModelAdmin):
     list_display = ('name','cluster','group','doc','url')
     list_filter = ('group','cluster')
+    search_fields = ('name',)
+    actions = ('update_previews',)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == 'group':
             kwargs['queryset'] = DocumentGroup.objects.order_by('parent__name','name')
         return admin.ModelAdmin.formfield_for_foreignkey(self, db_field, request, **kwargs)
 
+    def update_previews(self, request, queryset):
+        count = 0
+        for doc in queryset:
+            doc.create_preview()
+            count += 1
+        if count:
+            messages.success(request, f'{count} previews were updated.')
+        else:
+            messages.warning(request, 'No previews were updated.')
+    update_previews.short_description = 'Update previews of selected documents'
+    
 #     def save_model(self, request, obj, form, change):
 #         if not obj.url:
 #             obj.url = unquote(request.scheme + '://' + request.get_host() + obj.doc.url)

@@ -17,11 +17,11 @@ h2,h3 {
   padding-bottom: 0.5em;
 }
 
-@media only screen and (max-width: 600px) {
+@media screen and (max-width: 600px) {
 #tree1 {
   max-height: 300px;
   min-height: 300px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 #preview {
   width: 100%;
@@ -32,11 +32,11 @@ h2,h3 {
 
 }
 
-@media only screen and min-width: 600px) {
+@media screen and min-width: 600px) {
 #tree1 {
   min-height: 600px;
   max-height: 600px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 #preview {
   height: 100%;
@@ -50,15 +50,19 @@ h2,h3 {
 }
 
 #preview img {
+  height: 90%; /* allow for navbar space */ 
   max-width: 100%;
-  position: relative;
+  position: fixed;
   display: block;
 }
 
 </style>
 {% endblock %}
 {% block header %}
-<nav class="navbar navbar-dark unibar">
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+<nav class="navbar navbar-dark sticky-top unibar">
 	<li class="nav nav-brand">
 	    <a href="{% url 'home' %}"><img class="logosmall mt-2" src="/static/home-white.png"></a>
           <span class="mt-2 ml-2">Documents and Maps</span>
@@ -67,10 +71,7 @@ h2,h3 {
     	<a href="//en.acaciawater.com"><img class="logo ml-3" src="/static/logos/navbarlogo.png"></img></a>
    </li>
 </nav>
-{% endblock %}
-{% block content %}
-<div class="container-fluid h-100">
-<div class="row row-fluid h-100">
+<div class="row row-fluid">
 <div class="col-md-4 col-sm-12">
     <select id="county" class="custom-select" onchange="changeCounty()">
 	    <option value="0" selected>All counties</option>
@@ -140,7 +141,7 @@ function loadTree(county) {
 				return; //content = '<i>(No preview available)</i>'
 			}
 			// show preview content when mouse is 800 msec on item 
-			previewTimer = window.setTimeout(content => showContent(content), 800, content)
+			previewTimer = window.setTimeout(content => showContent(content), 500, content)
 		})
 	})
 }
