@@ -267,10 +267,13 @@ class Document(models.Model):
             name = 'na.png'
         self.preview.name = name
         self.save()
+
+    def has_preview(self):
+        return self.preview is not None and os.path.exists(self.preview.path)
             
     @property
     def preview_url(self):
-        if not (self.preview and os.path.exists(self.preview.path)):
+        if not self.has_preview():
             self.create_preview()
         return self.preview.url if self.preview else None
     

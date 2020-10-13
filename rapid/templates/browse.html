@@ -111,15 +111,36 @@ function showContent(content) {
 	$("#preview").html(content)
 }
 
-function loadTree(county) {
+async function showPreview(node) {
+	let content = ''
+	let thumb = $(node).attr('thumb')
+	if (!thumb) {
+		// try to get thumbnail url from backend
+		const pk = $(node).attr('pk')
+		if (pk) {
+			$("#preview").html("Loading preview...")
+			const result = await $.getJSON(`/preview/${pk}`)
+			thumb = result.url
+		}
+	}
+	if (thumb) {
+		content = `<img src="${thumb}">`
+		const link = $(node).find("a[href]").first()
+		if (link) {
+			const href = link.attr("href")
+			content = `<a href="${href}" title="Click to open">${content}</a>`
+		} 
+	}
+	$("#preview").html(content)
+}
+
+async function loadTree(county) {
 	let url = '/tree'
 	if (county) {
 		url += `?county=${county}`
 	}
 	$.getJSON(url).then(response => {
 		const tree = $("#tree1").bstreeview({data: response.results})
-		const view = tree.bstreeview
-		console.debug(view.settings)
 		$("#tree1 .open").collapse('show').removeClass('open')
 		const items = $("#tree1 .list-group-item") 
 		items.on("mouseleave", function() {
@@ -127,21 +148,7 @@ function loadTree(county) {
 		})
 		items.on("mouseenter", function() {
 			clearPreviewTimer()
-			const thumb = $(this).attr('thumb')
-			let content = ''
-			if (thumb) {
-				content = `<img src="${thumb}">`
-				const link = $(this).find("a[href]").first()
-				if (link) {
-					const href = link.attr("href")
-					content = `<a href="${href}" title="Click to open">${content}</a>`
-				} 
-			}
-			else {
-				return; //content = '<i>(No preview available)</i>'
-			}
-			// show preview content when mouse is 800 msec on item 
-			previewTimer = window.setTimeout(content => showContent(content), 500, content)
+			previewTimer = window.setTimeout(node => showPreview(node), 500, this)
 		})
 	})
 }

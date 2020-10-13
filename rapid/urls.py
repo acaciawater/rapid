@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views import MapDetailView, HomeView, BrowseView, OverlayView,\
     map_proxy, toggle, reorder, get_map, docs2tree
+from rapid.views import get_preview
 
 urlpatterns = [
     path('', HomeView.as_view()),
@@ -34,7 +35,7 @@ urlpatterns = [
     path('map/<int:pk>/', MapDetailView.as_view(),name='map-detail'),
     path('map', map_proxy, name='cluster-view'),
     path('tree', docs2tree),
-    
+    path('preview/<int:pk>/', get_preview, name='preview'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

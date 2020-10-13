@@ -17,6 +17,7 @@ from django.views.generic.detail import DetailView
 from .models import Map, DocumentGroup, Layer
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from rapid.models import Document
 
 
 # class MapDetailView(LoginRequiredMixin, DetailView):
@@ -122,6 +123,10 @@ def get_map(request, pk):
     return HttpResponse(map_obj.to_json(), content_type='application/json')
 
 
+def get_preview(request, pk):
+    doc = get_object_or_404(Document, pk=pk)
+    return JsonResponse({'url':doc.preview_url})
+    
 def docs2tree(request):
     ''' return json response with all documents in a format suitable for bstreeview '''
     
@@ -149,7 +154,8 @@ def docs2tree(request):
                 }
             if doc.doc:
                 item['href'] = doc.url or doc.doc.url
-                item['img'] = doc.preview_url
+                if doc.has_preview():
+                    item['img'] = doc.preview.url
             result.append(item)
         return result
     

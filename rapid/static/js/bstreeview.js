@@ -123,6 +123,10 @@
                     	// there is a thumbnail image, save as attribute
                     	treeItem.attr("thumb", node.img)
                     }
+                    if (node.id) {
+                    	// save primary key of document (for lazy loading of previews)
+                    	treeItem.attr("pk", node.id)
+                    }
                 }
 
                 // Set Expand and Collapse icons.
