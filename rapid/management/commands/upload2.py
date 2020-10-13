@@ -29,15 +29,18 @@ class Command(BaseCommand):
     def add_files(self, group, folder, county, recursive, pattern):
 
         for root, dirs, files in os.walk(folder):
-            
-            if recursive:
-                for dirname in dirs:
-                    group_name = dirname.title()
-                    sub, created = group.children.get_or_create(name=group_name)
-                    if created:
-                        logger.debug(f'Created group {sub}')
-                    self.add_files(sub, Path(root)/dirname, county, recursive, pattern)
 
+            tail = root[len(folder)+1:]
+
+            # create subgroups if needed
+            target = group
+            for name in tail.split('/'):
+                if name:
+                    name = name.title()
+                    target, created = target.children.get_or_create(name=name)
+                    if created:
+                        logger.debug(f'Created group {target}')
+            
             for filename in files:
                 if pattern and not pattern.search(filename):
                     logger.debug(f'Skipped {filename}')
@@ -51,7 +54,7 @@ class Command(BaseCommand):
                 with open(path,'rb') as f:
                     content = f.read()
                     doc_file = ContentFile(content,path.name)
-                doc, created = group.document_set.get_or_create(name=name,defaults = {
+                doc, created = target.document_set.get_or_create(name=name,defaults = {
                     'cluster': county,
                     'description': name,
                     'url': '',
@@ -60,6 +63,7 @@ class Command(BaseCommand):
                 if created:
                     logger.debug(f'Created document {doc}')
         
+
     def handle(self, *args, **options):
         county = options.get('county')
         group_id = options['group']
