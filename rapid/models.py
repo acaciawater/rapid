@@ -258,13 +258,13 @@ class Document(models.Model):
     def __str__(self):
         return self.name
 
-    def create_preview(self):
+    def create_preview(self, height=1080):
         try:
-            path = self.preview_manager.get_jpeg_preview(self.doc.path, height=600)
+            path = self.preview_manager.get_jpeg_preview(self.doc.path, height=height)
             index = path.find('preview')
             name = path[index:]
         except:
-            name = 'preview/na.png'
+            name = 'na.png'
         self.preview.name = name
         self.save()
             
