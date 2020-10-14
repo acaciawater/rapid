@@ -87,7 +87,7 @@ class OverlayView(TemplateView):
 
 
 COUNTIES = {
-    '0': 'All counties', # only for admins?
+    '0': 'Kenya Rapid',
     '1': 'Garissa',
     '2': 'Isiolo',
     '3': 'Marsabit',
@@ -124,6 +124,7 @@ def get_map(request, pk):
 
 
 def get_preview(request, pk):
+    ''' return preview url for a document '''
     doc = get_object_or_404(Document, pk=pk)
     return JsonResponse({'url':doc.preview_url})
     

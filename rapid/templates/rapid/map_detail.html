@@ -76,8 +76,10 @@ $(function() {
 
 	// load overlays
 	const list = $("#list");
+	list.html('<i class="text-muted text-center"><small>Loading layers, pelase wait...</small></i>')
 	overlayLayers = [];
 	$.getJSON('/map/{{map.pk}}/config/').then(response => {
+		list.html('')
 		addAllOverlays(response.groups, map, list).then(() => {
 			map.on('click', evt => {
 				// query all visible wms layers
@@ -106,7 +108,8 @@ body {
 }
 
 #listwrapper {
-  overflow-y: scroll
+  overflow-y: scroll;
+  font-size: small;
 }
 
 .list-group-item {
@@ -121,17 +124,7 @@ body {
 <nav class="navbar navbar-dark unibar">
 	<li class="nav nav-brand nav-item dropdown">
 	    <a href="{% url 'home' %}"><img class="logosmall mt-2" src="/static/home-white.png"></a>
-        <a class="nav-link dropdown-toggle unibar" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{object.name}}
-        </a>
-        <div class="dropdown-menu unibar" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item unibar" href="/map?county=1">Garissa</a>
-          <a class="dropdown-item unibar" href="/map?county=2">Isiolo</a>
-          <a class="dropdown-item unibar" href="/map?county=3">Marsabit</a>
-          <a class="dropdown-item unibar" href="/map?county=4">Turkana</a>
-          <a class="dropdown-item unibar" href="/map?county=5">Wajir</a>
-        </div>
-      </li>
+   </li>
    <li class="nav justify-content-end">
     	<a href="//en.acaciawater.com"><img class="logo ml-3" src="/static/logos/navbarlogo.png"></img></a>
    </li>
