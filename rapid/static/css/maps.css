@@ -37,16 +37,13 @@ html, body {
 	font-size: 10pt;
 }
 
-.laatste {
-	float:right;
-}
-
 .bullet {
  	width: 16px;
  	height: 16px;
  	margin-left: -12px;
  	margin-right: 4px;
 }
+
 .label {
 	position: absolute;
 	padding: 2px;
