@@ -13,6 +13,7 @@ from ogc.models import Layer as OGCLayer
 from .forms import LayerPropertiesForm, SelectMapForm
 from .models import Map, Layer, Group, DocumentGroup, Document
 from collections import OrderedDict
+from rapid.models import Photo
 
 
 admin.site.site_header = 'Kenya Rapid Administration'
@@ -59,7 +60,7 @@ class LayerAdmin(admin.ModelAdmin):
               ('opacity', 'transparent'),
               ('minzoom', 'maxzoom'),
               ('properties', 'clickable'),
-              'stylesheet','allow_download'
+              'info','allow_download'
               )
     list_filter = ('visible', 'map', 'group', 'map__user',
                    'layer__server', 'allow_download')
@@ -233,3 +234,7 @@ class DocumentAdmin(admin.ModelAdmin):
 class DocumentGroupAdmin(admin.ModelAdmin):
     inlines = [DocumentInline]
 
+@register(Photo)
+class PhotoAdmin(admin.ModelAdmin):
+    ...
+    

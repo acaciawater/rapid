@@ -76,7 +76,7 @@ $(function() {
 
 	// load overlays
 	const list = $("#list");
-	list.html('<i class="text-muted text-center"><small>Loading layers, pelase wait...</small></i>')
+	list.html('<i class="text-muted text-center">Loading layers, one moment...</i>')
 	overlayLayers = [];
 	$.getJSON('/map/{{map.pk}}/config/').then(response => {
 		list.html('')

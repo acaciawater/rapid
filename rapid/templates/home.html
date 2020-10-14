@@ -4,7 +4,7 @@
 {% include "google_analytics.html" %}
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Proview</title>
+<title>Keny RAPID</title>
 <script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>	
 <script src="//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -13,19 +13,19 @@
 <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
 <style>
-
-#fp {
+.fp {
   height: 600px;
+  display: block;
 }
-
-@media only screen and (max-width: 600px) {
-#fp {
+@media only screen and (max-width: 576px) { /* portait phone */
+.fp {
+  display: none;
+}
+.logos {
   width: 100%;
-  height: auto;'
+  height: auto;
 }
 }
-
-
 </style>
 </head>
 <body>
@@ -34,7 +34,7 @@
 </nav>
 <div id="wrapper" class="container-fluid">
 <div class="row">
-<div id="sidebar" class="col-md-4 col-sm-12">
+<div id="sidebar" class="col-lg-4 col-sm-12">
   <div class="list-group">
 	<a href="" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#projectModal" >Project</a>
 {% include "project-modal.html" %}
@@ -45,10 +45,10 @@
 	<a href="" class="list-group-item list-group-item-action" data-toggle="modal" data-target="#disclaimerModal" >Disclaimer</a>
 {% include "disclaimer-modal.html" %}
   </div>
-  </br>
+  <div><img class="logos" src="/static/frontpagelogos.png"></div>
 </div>
-<div id="content" class="col-md-8 col-sm-12">
-  <div><img id="fp" src="/static/frontpagelogos.png"></div>
+<div id="content" class="col-lg-8 col-sm-12">
+  <div><img class="fp" src="{{photo}}"></div>
 </div>
 </div>
 </div>

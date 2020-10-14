@@ -131,6 +131,17 @@ function opacityChanged(value, id) {
 	overlay.setOpacity(value)
 }
 
+function showInfo(title, url) {
+  console.debug(`Info requested for ${title}`)
+  return fetch(url).then(response => {
+	  return response.text().then(text => {
+		  $("#infoModal .modal-title").html(title)
+		  $("#infoModal .modal-body").html(text)
+		  $("#infoModal").modal("show")
+	  })
+  })
+}
+
 async function addOverlays (map, list, layers) {
   return layers.forEach(layer => {
     createOverlay(layer).then(overlay => {
@@ -147,7 +158,14 @@ async function addOverlays (map, list, layers) {
 		  	if (layer.downloadable) {
 		        // add download link that shows itself on hover
 		    	item += `<a class="download-link" href="/ows/download/${layer.layer_id}">
-		    		<i class="my-1 fas fa-arrow-alt-circle-down float-right" title="download ${layer.name}"></i>
+		    		<i class="my-1 ml-1 fas fa-arrow-alt-circle-down float-right" title="download ${layer.name}"></i>
+		    		</a>`
+		    }
+
+	        if (layer.info) {
+		        // add info link that shows itself on hover
+		    	item += `<a class="download-link text-primary" href="" onclick="showInfo('${layer.name}', '${layer.info}'); return false;">
+		    		<i class="my-1 fas fa-info float-right" title="More on ${layer.name}"></i>
 		    		</a>`
 		    }
 

@@ -67,6 +67,7 @@ class Map(models.Model):
                      'clickable': layer.clickable,
 #                      'stylesheet': layer.stylesheet,
                      'visible': layer.visible,
+                     'info': layer.info, 
                      'legend': layer.layer.legend_url(),
                      'options': layer.options()
                      } 
@@ -174,6 +175,9 @@ class Layer(models.Model):
     stylesheet = models.URLField(_('stylesheet'), null=True, blank=True, help_text=_(
         'url of stylesheet for GetFeatureInfo response'))
 
+    metadata = models.URLField(blank=True, null=True, help_text='URL for metadata')
+    info = models.URLField(blank=True, null=True,help_text='URL for background info')
+    
     def extent(self):
         ''' return extent of WMS layer in WGS84 coordinates '''
         return self.layer.extent()
@@ -280,3 +284,11 @@ class Document(models.Model):
     class Meta:
         ordering = ('name',)
 
+
+class Photo(models.Model):
+    photo=models.ImageField(upload_to='photos')
+    
+    def __str__(self):
+        return self.photo.name
+    
+        

@@ -75,6 +75,11 @@ html, body {
 	display: inline;
 }
 
+.layer:hover .info-link {
+	display: inline;
+	color: blue;
+}
+
 a.cog {
   color: white;
   text-decoration: none;

@@ -17,7 +17,9 @@ from django.views.generic.detail import DetailView
 from .models import Map, DocumentGroup, Layer
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from rapid.models import Document
+from rapid.models import Document, Photo
+import random
+from random import randint
 
 
 # class MapDetailView(LoginRequiredMixin, DetailView):
@@ -78,6 +80,15 @@ def toggle(request, mapid, layid):
 class HomeView(TemplateView):
     template_name = 'home.html'
 
+    def get_context_data(self, **kwargs):
+        context = TemplateView.get_context_data(self, **kwargs)
+        
+        # add random photo
+        query = Photo.objects.all()
+        record = query[randint(0, query.count()-1)]
+        context['photo']=record.photo.url
+        return context
+    
 # class BrowseView(LoginRequiredMixin, TemplateView):
 class BrowseView(TemplateView):
     template_name = 'browse.html'
@@ -127,7 +138,8 @@ def get_preview(request, pk):
     ''' return preview url for a document '''
     doc = get_object_or_404(Document, pk=pk)
     return JsonResponse({'url':doc.preview_url})
-    
+
+       
 def docs2tree(request):
     ''' return json response with all documents in a format suitable for bstreeview '''
     
