@@ -17,22 +17,20 @@ h2,h3 {
   padding-bottom: 0.5em;
 }
 
-@media screen and (max-width: 600px) {
+@media only screen and (max-width: 576px) {
 #tree1 {
-  max-height: 300px;
-  min-height: 300px;
   overflow-y: scroll;
 }
 #preview {
-  width: 100%;
-  background-color: white;
-  border: 1px solid lightgray;
-  border-radius: 4px;
+    display: none;
+}
+nav .logo {
+	display: none;
+}
 }
 
-}
 
-@media screen and min-width: 600px) {
+@media only screen and min-width: 576px) {
 #tree1 {
   min-height: 600px;
   max-height: 600px;

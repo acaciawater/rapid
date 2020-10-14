@@ -84,3 +84,9 @@ a.cog {
   color: white;
   text-decoration: none;
 }
+
+@media screen and (max-width: 576px) {
+nav .logo {
+  display: none; /* no logo on navbar for portait phone */
+}
+}
