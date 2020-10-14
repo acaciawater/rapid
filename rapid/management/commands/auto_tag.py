@@ -27,7 +27,7 @@ def process_groups(groups, names, force=False, recurse=True):
         elif recurse:
             process_groups(group.children.all(), names, force, recurse)
 
-def process_docs(names, force, recurse):
+def process_docs(names, force):
     query = Document.objects.all()
     if not force:
         query = query.filter(cluster=0)
@@ -53,5 +53,5 @@ class Command(BaseCommand):
         names = {k:v.lower() for k,v in COUNTIES.items()}
 
         process_groups(DocumentGroup.objects.filter(parent__isnull=True), names, force=force, recurse=recurse)
-        process_docs(names, force=force, recurse=recurse)
+        process_docs(names, force=force)
         

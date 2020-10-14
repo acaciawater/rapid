@@ -15,7 +15,7 @@ def key(val, d):
 
 class Command(BaseCommand):
 
-    help = 'Register manually uploaded documents'
+    help = 'Create default map from Atlas sever'
     
     def add_arguments(self, parser):
         parser.add_argument('-c','--county',default='0',help='county')
